@@ -12,10 +12,7 @@ function statement(invoice, plays) {
   }).format;
 
   for (let perf of invoice.performances) {
-    volumnCredits += Math.max(perf.audience - 30, 0);
-
-    if ("comedy" === playFor(perf).type)
-      volumnCredits += Math.floor(perf.audience / 5);
+    volumnCredits += volumnCreditsFor(perf);
 
     result += ` ${playFor(perf).name}: ${format(amountFor(perf) / 100)} (${
       perf.audience
@@ -25,6 +22,14 @@ function statement(invoice, plays) {
   result += `총액: ${format(totalAmount / 100)}\n`;
   result += `적립 포인트: ${volumnCredits}점\n`;
   return result;
+
+  function volumnCreditsFor(perf) {
+    let result = 0;
+    result += Math.max(perf.audience - 30, 0);
+    if ("comedy" === playFor(perf).type)
+      result += Math.floor(perf.audience / 5);
+    return result;
+  }
 
   function playFor(aPerformance) {
     return plays[aPerformance.playID];
