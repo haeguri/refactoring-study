@@ -1,9 +1,13 @@
-import invoices from "./data/invoices.js";
-import plays from "./data/plays.js";
-
 export default function statement(invoice, plays) {
-  let result = `청구 내역 (고객명: ${invoice.customer})\n`;
-  for (let perf of invoice.performances) {
+  const statementData = {};
+  statementData.customer = invoice.customer;
+  statementData.performances = invoice.performances;
+  return renderPlainText(statementData, plays);
+}
+
+function renderPlainText(data, plays) {
+  let result = `청구 내역 (고객명: ${data.customer})\n`;
+  for (let perf of data.performances) {
     result += ` ${playFor(perf).name}: ${usd(amountFor(perf) / 100)} (${
       perf.audience
     }석)\n`;
@@ -17,7 +21,7 @@ export default function statement(invoice, plays) {
 
   function totalAmount() {
     let result = 0;
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       result += amountFor(perf);
     }
     return result;
@@ -25,7 +29,7 @@ export default function statement(invoice, plays) {
 
   function totalVolumeCredits() {
     let result = 0;
-    for (let perf of invoice.performances) {
+    for (let perf of data.performances) {
       result += volumeCreditsFor(perf);
     }
     return result;
@@ -73,5 +77,3 @@ export default function statement(invoice, plays) {
     return result;
   }
 }
-
-console.log(statement(invoices[0], plays));
