@@ -12,16 +12,16 @@ function statement(invoice, plays) {
     totalAmount += amountFor(perf);
   }
 
-  let volumnCredits = totalVolumnCredits();
+  let volumeCredits = totalVolumeCredits();
 
   result += `총액: ${usd(totalAmount / 100)}\n`;
-  result += `적립 포인트: ${volumnCredits}점\n`;
+  result += `적립 포인트: ${volumeCredits}점\n`;
   return result;
 
-  function totalVolumnCredits() {
+  function totalVolumeCredits() {
     let result = 0;
     for (let perf of invoice.performances) {
-      result += volumnCreditsFor(perf);
+      result += volumeCreditsFor(perf);
     }
     return result;
   }
@@ -34,7 +34,7 @@ function statement(invoice, plays) {
     }).format(aNumber);
   }
 
-  function volumnCreditsFor(perf) {
+  function volumeCreditsFor(perf) {
     let result = 0;
     result += Math.max(perf.audience - 30, 0);
     if ("comedy" === playFor(perf).type)
