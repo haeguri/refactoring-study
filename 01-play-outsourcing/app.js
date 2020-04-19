@@ -3,20 +3,28 @@ import plays from "./data/plays.js";
 
 function statement(invoice, plays) {
   let totalAmount = 0;
-  let volumnCredits = 0;
   let result = `청구 내역 (고객명: ${invoice.customer})\n`;
 
   for (let perf of invoice.performances) {
-    volumnCredits += volumnCreditsFor(perf);
-
     result += ` ${playFor(perf).name}: ${usd(amountFor(perf) / 100)} (${
       perf.audience
     }석)\n`;
     totalAmount += amountFor(perf);
   }
+
+  let volumnCredits = totalVolumnCredits();
+
   result += `총액: ${usd(totalAmount / 100)}\n`;
   result += `적립 포인트: ${volumnCredits}점\n`;
   return result;
+
+  function totalVolumnCredits() {
+    let result = 0;
+    for (let perf of invoice.performances) {
+      result += volumnCreditsFor(perf);
+    }
+    return result;
+  }
 
   function usd(aNumber) {
     return new Intl.NumberFormat("en-US", {
