@@ -1,0 +1,17 @@
+{
+  "name": "refactoring-study",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/haeguri/refactoring-study",
+  "author": "haeguri <haegyun821@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "babel-jest": "^25.3.0",
+    "jest": "^25.3.0"
+  }
+}
