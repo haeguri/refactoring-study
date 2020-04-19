@@ -2,6 +2,8 @@ export default function statement(invoice, plays) {
   const statementData = {};
   statementData.customer = invoice.customer;
   statementData.performances = invoice.performances.map(enrichPerformance);
+  statementData.totalAmount = totalAmount(statementData);
+  statementData.totalVolumeCredits = totalVolumeCredits(statementData);
   return renderPlainText(statementData, plays);
 
   function enrichPerformance(aPerformance) {
@@ -44,23 +46,8 @@ export default function statement(invoice, plays) {
     if ("comedy" === perf.play.type) result += Math.floor(perf.audience / 5);
     return result;
   }
-}
 
-function renderPlainText(data, plays) {
-  let result = `청구 내역 (고객명: ${data.customer})\n`;
-  for (let perf of data.performances) {
-    result += ` ${perf.play.name}: ${usd(perf.amount / 100)} (${
-      perf.audiences
-    }석)\n`;
-  }
-
-  let volumeCredits = totalVolumeCredits();
-
-  result += `총액: ${usd(totalAmount() / 100)}\n`;
-  result += `적립 포인트: ${volumeCredits}점\n`;
-  return result;
-
-  function totalAmount() {
+  function totalAmount(data) {
     let result = 0;
     for (let perf of data.performances) {
       result += perf.amount;
@@ -68,13 +55,28 @@ function renderPlainText(data, plays) {
     return result;
   }
 
-  function totalVolumeCredits() {
+  function totalVolumeCredits(data) {
     let result = 0;
     for (let perf of data.performances) {
       result += perf.volumeCredits;
     }
     return result;
   }
+}
+
+function renderPlainText(data) {
+  let result = `청구 내역 (고객명: ${data.customer})\n`;
+  for (let perf of data.performances) {
+    result += ` ${perf.play.name}: ${usd(perf.amount / 100)} (${
+      perf.audiences
+    }석)\n`;
+  }
+
+  let volumeCredits = data.totalVolumeCredits;
+
+  result += `총액: ${usd(data.totalAmount / 100)}\n`;
+  result += `적립 포인트: ${volumeCredits}점\n`;
+  return result;
 
   function usd(aNumber) {
     return new Intl.NumberFormat("en-US", {
