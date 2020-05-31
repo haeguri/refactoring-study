@@ -29,7 +29,7 @@ export default class Province {
   }
 
   get profit() {
-    return this.demandValue - this.totalProduction;
+    return this.demandValue - this.demandCost;
   }
 
   get demandValue() {

@@ -7,7 +7,7 @@ export default class Producer {
   }
 
   get name() { return this._name; }
-  get coset() { return this._cost; }
+  get cost() { return this._cost; }
   set cost(arg) { this._cost = parseInt(arg); }
 
   get production() { return this._production; }
